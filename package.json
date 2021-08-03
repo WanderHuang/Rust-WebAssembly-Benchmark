@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "lerna run start --stream"
+    "start": "lerna run start --stream",
+    "build:wasm": "wasm-pack build --release ./packages/remote-wasm"
   },
   "private": true,
   "workspaces": [
