@@ -1,5 +1,6 @@
 mod universe;
 mod utils;
+mod dijkstra;
 
 use wasm_bindgen::prelude::*;
 
