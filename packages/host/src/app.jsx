@@ -2,12 +2,19 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import * as GameOfLife from "GameOfLifeModule/GameOfLifeModule";
 import { Universe as JsUniverse } from "./life_game";
 import display from "./display";
+import { generatGraph, js_find_shortest_path } from "../algo/dijkstra";
 
 const size = 200;
 const jsCells = new JsUniverse(size);
 
 let wasm = 0;
 let js = 0;
+
+
+
+let dijkstra_algo = {
+  js: js_find_shortest_path,
+}
 
 const App = () => {
   const [cells, setCells] = useState(undefined);
@@ -18,7 +25,8 @@ const App = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useLayoutEffect(() => {
-    GameOfLife.then(({ Universe }) => {
+    GameOfLife.then(({ Universe, find_shortest_path }) => {
+      dijkstra_algo.wasm = find_shortest_path;
       if (!cells) {
         setCells(Universe.new(size));
       }
@@ -72,12 +80,26 @@ const App = () => {
     life.current.textContent = display(jsCells.render(), size);
   };
 
+  const dijkstra = () => {
+    let graph = generatGraph(100);
+    let t1 = performance.now();
+    let res_js = dijkstra_algo.js(graph, 10);
+    let t2 = performance.now();
+    let res_wasm = dijkstra_algo.wasm(graph, 10);
+    let t3 = performance.now();
+
+    console.log(res_js);
+    console.log(res_wasm);
+    console.log('js', t2 - t1, 'wasm', t3 - t2);
+  }
+
   return (
     <main>
       <h1>Host App</h1>
       <button onClick={toggle}>{isPlaying ? "Stop 🛑" : "Play ▶️"}</button>
       <button onClick={tick}>Tick 🔂</button>
       <button onClick={reset}>Reset ♻️</button>
+      <button onClick={dijkstra}>️dijkstra</button>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1, marginRight: 10 }}>
           <h2>wasm</h2>
