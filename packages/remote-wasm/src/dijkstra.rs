@@ -1,55 +1,50 @@
 use std::collections::HashMap;
-use wasm_bindgen::prelude::*;
-use serde::{Serialize, Deserialize};
 
+use log::{error, info, warn};
+use wasm_bindgen::prelude::*;
+use wasm_bindgen_console_logger::DEFAULT_LOGGER;
 
 #[wasm_bindgen]
-pub fn find_shortest_path(origin: &JsValue, s: &str) {
+pub fn find_shortest_path(origin: &JsValue, start: i32) -> JsValue {
+    log::set_logger(&DEFAULT_LOGGER).unwrap();
+    log::set_max_level(log::LevelFilter::Info);
 
-	let graph: HashMap<&str, HashMap<&str, i16>> = origin.into_serde().unwrap();
-	
-    let mut solutions: HashMap<&str, Vec<&str>> = HashMap::new();
-    let mut distMap: HashMap<&str, i16> = HashMap::new();
+    let graph: HashMap<String, HashMap<String, i32>> = origin.into_serde().unwrap();
+    let mut solutions: HashMap<String, Vec<i32>> = HashMap::new();
+    let mut dist_map: HashMap<String, i32> = HashMap::new();
 
-    solutions.insert(s, Vec::new());
-    distMap.insert(s, 0);
+    solutions.insert(start.to_string(), Vec::new());
+    dist_map.insert(start.to_string(), 0);
 
     loop {
-        let mut parent;
-        let mut nearest;
-        let mut dist = i16::MAX;
-
+        let mut dist = i32::MAX;
+        let mut parent = Vec::new();
+        let mut nearest: i32 = 0;
         for n in solutions.keys() {
-            if !solutions.contains_key(n) {
-                continue;
-            }
-            let ndist = distMap.get(n).unwrap();
-            let adj = graph.get(n).unwrap();
+            
+            let ndist = dist_map[n];
+            let adj = &graph[n];
             for a in adj.keys() {
-                match solutions.get(a) {
-					Some(_) => continue,
-					None => {
-						let d = adj.get(a).unwrap() + ndist;
-						if d < dist {
-							parent = solutions.get(n).unwrap();
-							nearest = a;
-							dist = d;
-						}
-					}
-				}
-
+                if solutions.contains_key(a) {
+                    continue;
+                }
                 
+                let d = adj[a] + ndist;
+                if d < dist {
+                    parent = solutions[n].clone();
+                    nearest = a.parse::<i32>().unwrap();
+                    dist = d;
+                }
             }
-            if dist != i16::MAX {
-                break;
-            }
-
-			parent.push(nearest);
-			solutions.insert(nearest, &parent);
-			distMap.insert(nearest, dist);
         }
+        if dist == i32::MAX {
+            break;
+        }
+
+        parent.push(nearest);
+        solutions.insert(nearest.to_string(), parent.clone());
+        dist_map.insert(nearest.to_string(), dist);
     }
 
-	solutions
-
+    JsValue::from_serde(&dist_map).unwrap()
 }

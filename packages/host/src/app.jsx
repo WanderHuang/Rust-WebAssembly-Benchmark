@@ -81,11 +81,11 @@ const App = () => {
   };
 
   const dijkstra = () => {
-    let graph = generatGraph(100);
+    let graph = generatGraph(1000);
     let t1 = performance.now();
-    let res_js = dijkstra_algo.js(graph, 10);
+    let res_js = dijkstra_algo.js(graph, 5);
     let t2 = performance.now();
-    let res_wasm = dijkstra_algo.wasm(graph, 10);
+    let res_wasm = dijkstra_algo.wasm(graph, 5);
     let t3 = performance.now();
 
     console.log(res_js);
