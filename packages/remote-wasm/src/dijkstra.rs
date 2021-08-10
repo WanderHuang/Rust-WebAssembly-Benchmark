@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use js_sys::Date;
 use log::{error, info, warn};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_console_logger::DEFAULT_LOGGER;
@@ -15,6 +16,8 @@ pub fn find_shortest_path(origin: &JsValue, start: i32) -> JsValue {
 
     solutions.insert(start.to_string(), Vec::new());
     dist_map.insert(start.to_string(), 0);
+
+    let t0 = Date::now();
 
     loop {
         let mut dist = i32::MAX;
@@ -45,6 +48,8 @@ pub fn find_shortest_path(origin: &JsValue, start: i32) -> JsValue {
         solutions.insert(nearest.to_string(), parent.clone());
         dist_map.insert(nearest.to_string(), dist);
     }
+
+    info!("inner call {}", Date::now() - t0);
 
     JsValue::from_serde(&dist_map).unwrap()
 }
