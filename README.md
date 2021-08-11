@@ -25,6 +25,8 @@
 
 ## 运行方式
 
+`wasm-pack build ./packages/remote-wasm`
+
 `yarn & yarn start`
 
 ## 结构
