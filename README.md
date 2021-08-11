@@ -9,7 +9,7 @@
 <img width="472" alt="截屏2021-08-11 下午11 27 41" src="https://user-images.githubusercontent.com/18475942/129058708-9b4696c7-100c-4ff6-88d3-1eb6c0e5d5f5.png">
 
 
-文章地址: [这里](https://rustwasm.github.io/book/game-of-life/time-profiling.html)
+文章地址: [这里](https://rustwasm.github.io/docs/book/game-of-life/time-profiling.html)
 
 ## <del>计算下一个tick的耗时</del>
 
@@ -47,6 +47,6 @@
 
 ## 测试进程
 
-- 20210811 发现了一册宝藏[开源书](https://rustwasm.github.io/book/introduction.html)。基于这篇文章优化后`Rust`非常快！！！！
+- 20210811 发现了一册宝藏[开源书](https://rustwasm.github.io/docs/book/)。基于这篇文章优化后`Rust`非常快！！！！
 
 - 20210803测试了引入`js-sys`后，使用`Date.now`来计算时间，这个也不理想。还不如不计算。另外就是`std::time::SystemTime`这个库好像不被支持，一使用就`unreachable`。然后在一个群里问了大家，也没有什么好的性能优化结果。暂时又搁浅吧。继续看有没有库能够超过`js`性能的
