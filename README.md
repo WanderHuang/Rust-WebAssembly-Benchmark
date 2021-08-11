@@ -4,7 +4,10 @@
 
 ## 最新比较
 
-`Rust`优化后速度奇快
+`Rust`优化后速度奇快，我愿吹爆！！！
+
+<img width="472" alt="截屏2021-08-11 下午11 27 41" src="https://user-images.githubusercontent.com/18475942/129058708-9b4696c7-100c-4ff6-88d3-1eb6c0e5d5f5.png">
+
 
 文章地址: [这里](https://rustwasm.github.io/book/game-of-life/time-profiling.html)
 
