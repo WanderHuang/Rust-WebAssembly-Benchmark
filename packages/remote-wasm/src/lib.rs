@@ -1,6 +1,12 @@
+#![feature(test)]
+
+extern crate test;
+mod dijkstra_bench;
+
 mod universe;
 mod utils;
 mod dijkstra;
+mod time;
 
 use wasm_bindgen::prelude::*;
 
