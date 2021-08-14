@@ -4,57 +4,61 @@ use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 // use wasm_bindgen_console_logger::DEFAULT_LOGGER;
 
+use crate::time::NativeTimer;
 use crate::time::Timer;
 
 #[wasm_bindgen]
 pub fn find_shortest_path_simple(origin: &JsValue, size: usize, start: i32) -> JsValue {
-    let graph: HashMap<i32, HashMap<i32, i32>> = origin.into_serde().unwrap();
-    
+    let graph_map: HashMap<i32, HashMap<i32, i32>> = origin.into_serde().unwrap();
 
-    JsValue::from_serde(&find_shortest_path_simple_inner(&graph, size, start)).unwrap()
+    JsValue::from_serde(&find_shortest_path_simple_inner(&graph_map, size, start)).unwrap()
 }
 
-pub fn find_shortest_path_simple_inner(graph: &HashMap<i32, HashMap<i32, i32>>, size: usize, start: i32) -> HashMap<i32, Vec<i32>> {
-    let mut solutions: HashMap<i32, Vec<i32>> = HashMap::with_capacity(size);
-    let mut keys: Vec<i32> = Vec::new();
-    let mut dist_map: HashMap<i32, i32> = HashMap::with_capacity(size);
+pub fn find_shortest_path_simple_inner(
+    graph: &HashMap<i32, HashMap<i32, i32>>,
+    size: usize,
+    start: i32,
+) -> HashMap<i32, (Vec<i32>, i32)> {
 
-    solutions.insert(start, Vec::with_capacity(size));
-    keys.push(start);
-    dist_map.insert(start, 0);
+    let mut solutions: HashMap<i32, (Vec<i32>, i32)> = HashMap::new();
+
+    solutions.insert(start, (Vec::new(), 0));
 
     loop {
+        
         let mut dist = i32::MAX;
         let mut parent = i32::MAX;
         let mut nearest = 0;
-        keys.iter().for_each(|n| {
-            graph
-                .get(n)
-                .unwrap()
-                .iter()
-                .filter(|(x, _)| !keys.contains(x))
-                .for_each(|(a, cdist)| {
-                    let ndist = dist_map.get(n).unwrap();
-                    let d = cdist + ndist;
-                    if d < dist {
-                        dist = d;
-                        parent = n.to_owned();
-                        nearest = a.to_owned();
-                    }
-                });
-        });
+        
+        // 已访问元素 `start`开始
+        for (x, (_, xdist)) in solutions.iter() {
+            let adj = graph.get(x).unwrap();
+            for (y, weight) in adj.iter() {
+                if solutions.contains_key(y) {
+                    continue;
+                }
+                
+                let d = weight + xdist;
+                if d < dist {
+                    dist = d;
+                    parent = *x;
+                    nearest = *y;
+                }
+            }
+        }
+        
+
+
+        // 找不到更小值了 所有节点都已经访问
         if dist == i32::MAX {
             break;
         }
 
-        if let Some(p) = solutions.get_mut(&parent) {
-            p.push(nearest);
-        }
-        solutions.insert(nearest, solutions.get(&parent).unwrap().to_owned());
-        keys.push(nearest);
-
-        dist_map.insert(nearest, dist);
+        let (mut vc, _) = solutions.get(&parent).unwrap().to_owned();
+        vc.push(nearest);
+        solutions.insert(nearest, (vc, dist));
     }
+
     solutions
 }
 

@@ -4,18 +4,25 @@ function generatGraph(n) {
   let graph = {};
 
   for (let i = 0; i < n; i++) {
-    let adj = {};
-
-    for(let k = 0; k < n; k ++) {
+    if (!graph[i]) {
+      graph[i] = {};
+    }
+    for (let k = 0; k < n; k++) {
       if (k !== i && Math.random() < 0.6) {
         if (!graph[k] || !graph[k][i]) {
-          adj[k] = ((Math.random() * 100) | 0) + 1;
+          let rand = ((Math.random() * 100) | 0) + 1;
+          if (!graph[i]) {
+            graph[i] = {};
+          } else if (!graph[k]) {
+            graph[k] = {};
+          }
+
+          graph[i][k] = rand;
+          graph[k][i] = rand;
+          
         }
       }
     }
-    
-
-    graph[i] = adj;
   }
 
   return graph;
@@ -32,9 +39,13 @@ function js_find_shortest_path(graph, s) {
     var nearest = null;
     var dist = Infinity;
 
+    // console.log(">>>>", solutions);
     //for each existing solution
     for (var n in solutions) {
-      if (!solutions[n]) continue;
+      if (!solutions[n]) {
+        console.log(">>>>", solutions[n])
+        continue;
+      }
       var ndist = solutions[n].dist;
       var adj = graph[n];
       //for each of its adjacent nodes...
@@ -45,9 +56,10 @@ function js_find_shortest_path(graph, s) {
         var d = adj[a] + ndist;
         if (d < dist) {
           //reference parent
-          parent = solutions[n];
+          parent = JSON.parse(JSON.stringify(solutions[n]));
           nearest = a;
           dist = d;
+          console.log("update nearest", a, d)
         }
       }
     }
@@ -61,13 +73,14 @@ function js_find_shortest_path(graph, s) {
     solutions[nearest] = parent.concat(nearest);
     //extend parent's cost
     solutions[nearest].dist = dist;
+    console.log(`${s} to ${nearest} >>`, solutions[nearest], solutions[nearest].dist)
   }
 
   // return Object.entries(solutions).reduce((prev, [key, val]) => {
   //   prev[key] = val.dist;
   //   return prev;
   // }, {});
-  return solutions
+  return solutions;
 }
 //create graph
 // var graph = {};
@@ -113,23 +126,24 @@ function js_find_shortest_path(graph, s) {
 //     graph[aid][id] = 1;
 //   });
 // }
-let graph = generatGraph(200);
-// console.log(graph)
+let graph = generatGraph(50);
+console.log(graph);
 
 //choose start node
 //get all solutions
 // let graph = generatGraph(1000);
 let start = Date.now();
-var solutions = js_find_shortest_path(graph, 5);
+var solutions = js_find_shortest_path(graph, 0);
 let end = Date.now();
 
 // display solutions
-console.log("From '"+start+"' to");
+console.log("From '"+0+"' to");
 for(var s in solutions) {
   if(!solutions[s]) continue;
   console.log(" -> " + s + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")");
 }
-console.log("time >", end - start);
+// console.log({3: {0: 7, 5: 89, 8: 47, 9: 11, 6: 54, 1: 26, 7: 67, 2: 33}, 2: {0: 29, 9: 38, 3: 33, 1: 45, 8: 72, 5: 45, 4: 58, 7: 41, 6: 39}, 0: {4: 91, 8: 11, 7: 48, 9: 27, 6: 80, 5: 79, 3: 7, 2: 29}, 7: {2: 41, 6: 82, 3: 67, 0: 48, 1: 94, 4: 55, 5: 47, 8: 28}, 8: {3: 47, 1: 26, 7: 28, 5: 14, 9: 76, 4: 42, 2: 72, 6: 77, 0: 11}, 6: {9: 56, 0: 80, 3: 54, 4: 21, 1: 38, 5: 37, 7: 82, 2: 39, 8: 77}, 9: {1: 55, 2: 38, 3: 11, 0: 27, 4: 50, 8: 76, 6: 56, 5: 71}, 4: {9: 50, 8: 42, 7: 55, 0: 91, 1: 39, 2: 58, 6: 21, 5: 11}, 5: {6: 37, 8: 14, 9: 71, 4: 11, 0: 79, 3: 89, 2: 45, 1: 8, 7: 47}, 1: {4: 39, 3: 26, 7: 94, 5: 8, 9: 55, 2: 45, 6: 38, 8: 26}})
+console.log('time >', end - start);
 
 // From '10' to
 //  -> 2: [7, 5, 4, 2]   (dist:4)
