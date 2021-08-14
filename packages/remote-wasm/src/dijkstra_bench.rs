@@ -10,6 +10,13 @@ mod tests {
         b.iter(|| find_shortest_path_simple(&val, 10));
     }
 
+    #[test]
+    fn find_shortest_path_simple_test() {
+        let val = generate_js_value(10);
+        let res = find_shortest_path_simple(&val, 2);
+        assert_eq!(1, 1);
+    }
+
     fn find_shortest_path_simple(
         graph: &HashMap<i32, HashMap<i32, i32>>,
         start: i32,
@@ -17,10 +24,18 @@ mod tests {
         let mut solutions: HashMap<i32, Vec<i32>> = HashMap::new();
         let mut dist_map: HashMap<i32, i32> = HashMap::new();
 
-        solutions.insert(start, Vec::new());
+        let mut row = Vec::with_capacity(10);
+        solutions.insert(start, row);
         dist_map.insert(start, 0);
 
+        let mut x = 0;
+
         loop {
+            if x == 10 {
+                break;
+            } else {
+                x += 1;
+            }
             let mut dist = i32::MAX;
             let mut parent = i32::MAX;
             let mut nearest: i32 = 0;
@@ -46,15 +61,18 @@ mod tests {
             if dist == i32::MAX {
                 break;
             }
+
+            // get_mut 获取所有权
             if parent == i32::MAX {
                 solutions.insert(nearest, vec![nearest]);
+            } else if let Some(x) = solutions.get_mut(&parent) {
+                x.push(nearest);
             } else {
-                let mut vc = solutions.get(&parent).unwrap().to_owned();
-				vc.push(nearest);
-                solutions.insert(nearest, vc);
             }
 
-            dist_map.insert(nearest, dist);
+            if let Some(x) = dist_map.get_mut(&nearest) {
+                *x = dist;
+            }
         }
         dist_map
     }

@@ -18,7 +18,7 @@ js-sys = "0.3.52"
 wasm-bindgen-console-logger = "0.1.1"
 log = "0.4.14"
 web-sys = { version = "0.3.52", features = ["console"] }
-rand = "0.8.4"
+# rand = "0.8.4"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
