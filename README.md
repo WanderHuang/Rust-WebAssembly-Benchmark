@@ -14,6 +14,12 @@
 
 ### dijkstra算法
 
+4000节点
+
+<img width="449" alt="截屏2021-08-15 上午1 59 32" src="https://user-images.githubusercontent.com/18475942/129456249-07a6ceca-1cf9-46b7-ad04-e56f46e72949.png">
+
+1000节点
+
 <img width="447" alt="截屏2021-08-15 上午12 52 52" src="https://user-images.githubusercontent.com/18475942/129453566-c2e56857-b13e-45be-9bd2-cfa01932ca49.png">
 
 这个算法(`dijkstra`)在测试的时候遇到一个诡异的现象：
