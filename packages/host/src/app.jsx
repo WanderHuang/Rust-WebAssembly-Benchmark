@@ -82,17 +82,18 @@ const App = () => {
   };
 
   const dijkstra = () => {
-    let graph = generatGraph(20);
+    let size = 1000;
+    let graph = generatGraph(size);
     let t1 = performance.now();
     let res_js = dijkstra_algo.js(graph, 5);
     let t2 = performance.now();
-    let res_wasm = dijkstra_algo.wasm(graph, 5);
+    // let res_wasm = dijkstra_algo.wasm(graph, 5);
     let t3 = performance.now();
-    let res_wasm_simple = dijkstra_algo.wasm_simple(graph, 5);
+    let res_wasm_simple = dijkstra_algo.wasm_simple(graph, size, 5);
     let t4 = performance.now();
 
     console.log(res_js);
-    console.log(res_wasm);
+    // console.log(res_wasm);
     console.log(res_wasm_simple);
     console.log('js', t2 - t1, 'wasm', t3 - t2, 'res_wasm_simple', t4 - t3);
   }

@@ -1,7 +1,7 @@
 #![feature(test)]
 
 extern crate test;
-// mod dijkstra_bench;
+mod dijkstra_bench;
 
 mod universe;
 mod utils;
