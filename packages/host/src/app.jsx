@@ -96,6 +96,7 @@ const App = () => {
     // console.log(res_wasm);
     console.log(res_wasm_simple);
     console.log('js', t2 - t1, 'wasm', t3 - t2, 'res_wasm_simple', t4 - t3);
+    alert(`finish: js ${t2 - t1} wasm ${t4 - t3}`)
   }
 
   return (
