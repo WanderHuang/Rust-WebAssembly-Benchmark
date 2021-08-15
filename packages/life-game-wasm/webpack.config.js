@@ -39,7 +39,7 @@ module.exports = {
       name: "GameOfLifeModule",
       filename: "remoteEntry.js",
       exposes: {
-        "./GameOfLifeModule": "./pkg/",
+        "./wasm": "./pkg/",
       },
     }),
   ],

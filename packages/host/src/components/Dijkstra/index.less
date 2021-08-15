@@ -1,0 +1,25 @@
+.dijkstra-board {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 1650px;
+    position: relative;
+    &::before {
+        content: "<- wasm";
+        position: absolute;
+        left: 50%;
+        top: calc(50% - 20px);
+        display: inline-block;
+        width: 60px;
+        transform: translateX(-30px);
+    }
+    &::after {
+        content: "js  ->";
+        position: absolute;
+        left: 50%;
+        top: calc(50% + 20px);
+        display: inline-block;
+        width: 60px;
+        transform: translateX(-30px);
+    }
+}

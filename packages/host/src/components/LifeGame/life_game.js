@@ -8,7 +8,7 @@ function createUniverse(size) {
   let height = size;
   let cells = new Array(size * size)
     .fill(0)
-    .map((zero, x) => (x % 2 === 0 || x % 11 === 0 ? Cell.Alive : Cell.Dead));
+    .map((zero, x) => (x % 5 === 0 || x % 13 === 0 || x % 17 === 0 ? Cell.Alive : Cell.Dead));
   return [width, height, cells];
 }
 
