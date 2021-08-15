@@ -4,12 +4,30 @@
 
 ## 最新比较
 
+### 生命游戏
+
 `Rust`优化后速度奇快，我愿吹爆！！！
 
-<img width="472" alt="截屏2021-08-11 下午11 27 41" src="https://user-images.githubusercontent.com/18475942/129058708-9b4696c7-100c-4ff6-88d3-1eb6c0e5d5f5.png">
-
+<img width="1492" alt="截屏2021-08-15 上午12 55 55" src="https://user-images.githubusercontent.com/18475942/129453662-41903e40-3ef2-4c88-820c-8fab4618de5b.png"><img width="472" alt="截屏2021-08-11 下午11 27 41" src="https://user-images.githubusercontent.com/18475942/129058708-9b4696c7-100c-4ff6-88d3-1eb6c0e5d5f5.png">
 
 文章地址: [这里](https://rustwasm.github.io/docs/book/game-of-life/time-profiling.html)
+
+### dijkstra算法
+
+4000节点
+
+<img width="449" alt="截屏2021-08-15 上午1 59 32" src="https://user-images.githubusercontent.com/18475942/129456249-07a6ceca-1cf9-46b7-ad04-e56f46e72949.png">
+
+1000节点
+
+<img width="447" alt="截屏2021-08-15 上午12 52 52" src="https://user-images.githubusercontent.com/18475942/129453566-c2e56857-b13e-45be-9bd2-cfa01932ca49.png">
+
+这个算法(`dijkstra`)在测试的时候遇到一个诡异的现象：
+1. 不开控制台，wasm略快于js
+2. 开控制台，wasm比js慢几倍的速速
+
+待解决这个问题🤔(节点数 1000)
+
 
 ## <del>计算下一个tick的耗时</del>
 
