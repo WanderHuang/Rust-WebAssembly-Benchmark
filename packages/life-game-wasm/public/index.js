@@ -1,0 +1,1 @@
+console.log("life-game works");

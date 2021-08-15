@@ -26,7 +26,7 @@ impl Universe {
 
         let cells = (0..width * height)
             .map(|i| {
-                if i % 2 == 0 || i % 11 == 0 {
+                if i % 5 == 0 || i % 13 == 0 || i % 17 == 0 {
                     Cell::Alive
                 } else {
                     Cell::Dead

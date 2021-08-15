@@ -1,9 +1,10 @@
 {
-  "name": "remote-wasm",
+  "name": "dijkstra-wasm",
   "version": "0.1.0",
   "scripts": {
     "start": "webpack serve --mode=development",
-    "test": "cargo test && wasm-pack test --headless"
+    "test": "cargo test && wasm-pack test --headless",
+    "build:wasm": "wasm-pack build"
   },
   "devDependencies": {
     "webpack": "5.46.0",

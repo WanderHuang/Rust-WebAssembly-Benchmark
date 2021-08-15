@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "lerna run start --stream",
-    "build:wasm": "wasm-pack build --release ./packages/remote-wasm"
+    "build:wasm": "lerna run build:wasm --stream"
   },
   "private": true,
   "workspaces": [
