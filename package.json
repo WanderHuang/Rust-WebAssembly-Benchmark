@@ -1,5 +1,5 @@
 {
-  "name": "wasm-federation-demo",
+  "name": "rust-wasm-benchmark",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
