@@ -5,6 +5,7 @@ extern crate test;
 
 mod dijkstra;
 mod utils;
+mod desk;
 
 use wasm_bindgen::prelude::*;
 

@@ -41,12 +41,14 @@ function Dijkstra() {
 
   const reset = () => {
     setPerf({});
+    renderGraph(wasmCanvasRef.current.getContext('2d'), {}, size); 
+    renderGraph(jsCanvasRef.current.getContext('2d'), {}, size); 
   };
 
   function runStep(graph) {
-    let wasmSolutions = {
-      0: [[], 0],
-    };
+    // let wasmSolutions = {
+    //   0: [[], 0],
+    // };
     let jsSolutions = {
       0: [[], 0],
     };
@@ -55,6 +57,7 @@ function Dijkstra() {
       wasm: 0,
       js: 0,
     };
+    let wasmDesk = wasmRef.current.Desk.new(graph, 0);
 
     function runWasm() {
       return new Promise((resolve) => {
@@ -62,21 +65,17 @@ function Dijkstra() {
         function exec() {
           setTimeout(() => {
             let start = performance.now();
-            let [finish, res] = wasmRef.current.find_shortest_path_simple(
-              graph,
-              wasmSolutions
-            );
+            let finish = wasmDesk.tick();
             perfRef.current.wasm += performance.now() - start;
-            wasmSolutions = res;
             renderGraph(
               wasmCanvasRef.current.getContext('2d'),
-              wasmSolutions,
+              wasmDesk.get_result(),
               size
             );
             if (!finish) {
               exec();
             } else {
-              resolve(wasmSolutions);
+              resolve(wasmDesk.get_result());
             }
           }, 0);
         }
@@ -127,7 +126,8 @@ function Dijkstra() {
 
     function runWasm() {
       let start = performance.now();
-      let res = wasmRef.current.find_shortest_path_all(graph, 0);
+      let wasmDesk = wasmRef.current.Desk.new(graph, 0);
+      let res = wasmDesk.get_all();
       perfRef.current.wasm += performance.now() - start;
       renderGraph(wasmCanvasRef.current.getContext('2d'), res, size);
       console.log('wasm', res);
@@ -173,7 +173,7 @@ function Dijkstra() {
             setSize(val);
           }}
         />
-        <Select value={type} onChange={(e) => setType(e)}>
+        <Select value={type} onChange={(e) => setType(e)} disabled={loading}>
           <Select.Option value={1}>单步执行</Select.Option>
           <Select.Option value={2}>合并执行</Select.Option>
         </Select>

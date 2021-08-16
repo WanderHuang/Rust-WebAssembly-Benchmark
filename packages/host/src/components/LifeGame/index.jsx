@@ -10,11 +10,11 @@ import { Universe as JsUniverse } from './life_game';
 import { Input, Row, Button, Col, message } from 'antd';
 import './index.less';
 
-let wasm = 0;
-let js = 0;
-
 let bgColor = '#97eaa5';
 let lifeColor = 'lightcoral';
+
+let js = 0;
+let wasm = 0;
 
 const LifeGame = () => {
   // 生命游戏面板
@@ -22,6 +22,7 @@ const LifeGame = () => {
   const [jsCells, setJsCells] = useState(undefined);
   const [size, setSize] = useState(200);
   const universeRef = useRef();
+  const [perf, setPerf] = useState({ wasm: 0, js: 0 });
   // canvas绘制
   const jsRef = useRef();
   const wasmRef = useRef();
@@ -71,6 +72,10 @@ const LifeGame = () => {
     window.cancelAnimationFrame(animationId.current);
     animationId.current = undefined;
     console.log('wasm [', wasm, ']ms, js [', js, ']ms');
+    setPerf({
+      wasm,
+      js
+    });
     wasm = 0;
     js = 0;
   };
@@ -136,6 +141,8 @@ const LifeGame = () => {
             Reset ♻️
           </Button>
         </Col>
+        <Button disabled={true}>wasm {perf?.wasm || 0} ms</Button>
+        <Button disabled={true}>js {perf?.js || 0} ms</Button>
       </Row>
       <div className="life-game__board">
         <canvas
