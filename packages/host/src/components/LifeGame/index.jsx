@@ -130,6 +130,20 @@ const LifeGame = () => {
             {isPlaying ? 'Stop 🛑' : 'Play ▶️'}
           </Button>
         </Col>
+        <Col>
+          <Button
+            onClick={() => {
+              toggle();
+              setTimeout(() => {
+                toggle();
+              }, 100000);
+            }}
+            type="primary"
+          >
+            {' '}
+            {isPlaying ? 'Testing 🛑' : 'Test10s ▶️'}
+          </Button>
+        </Col>
 
         <Col>
           <Button onClick={tick} type="primary" disabled={isPlaying}>
