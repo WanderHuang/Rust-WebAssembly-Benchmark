@@ -3,13 +3,15 @@ mod tests {
     use rand::Rng;
     use std::collections::HashMap;
     use test::Bencher;
-    use crate::dijkstra::find_shortest_path_simple_inner;
+    use crate::dijkstra::find_shortest_path_all_inner;
+    use crate::desk::Desk;
     use std::time::{Duration, SystemTime};
+    use wasm_bindgen::prelude::*;
 
     #[bench]
     fn bench_dijkstra(b: &mut Bencher) {
         let val = generate_js_value(20);
-        b.iter(|| find_shortest_path_simple_inner(&val, 20, 5));
+        b.iter(|| find_shortest_path_all_inner(&val, 5));
     }
 
     #[test]
@@ -17,7 +19,7 @@ mod tests {
         let size = 200;
         let val = generate_js_value(size);
         let start = SystemTime::now();
-        let res = find_shortest_path_simple_inner(&val, size as usize, 5);
+        let res = find_shortest_path_all_inner(&val, 5);
         // println!("{:?}", val);
         println!("{:?}", res);
         // println!("{:?}", SystemTime::now().duration_since(start));

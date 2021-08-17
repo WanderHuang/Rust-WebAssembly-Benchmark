@@ -22,6 +22,76 @@ export function generatGraph(n) {
   return graph;
 }
 
+/** 高效对象方式 */
+export class JsDijkstra {
+  constructor(graph, start) {
+    this.graph = JSON.parse(JSON.stringify(graph));
+    this.solutions = {
+      // [path, dist]
+      [start]: [[], 0]
+    };
+    this.end = false;
+  }
+
+  tick() {
+    if (this.end) {
+      return this.end;
+  }
+    let parent = null;
+    let nearest = null;
+    let dist = Infinity;
+
+    for (let n in this.solutions) {
+      if (!this.solutions[n]) continue;
+      let ndist = this.solutions[n][1];
+      let adj = this.graph[n];
+      let visited = [];
+      for (let a in adj) {
+        if (this.solutions[a]) {
+          visited.push(a);
+          continue;
+        }
+        var d = adj[a] + ndist;
+        if (d < dist) {
+          //reference parent
+          parent = this.solutions[n][0];
+          nearest = Number(a);
+          dist = d;
+        }
+      }
+      if (visited.length) {
+        visited.forEach(key => {
+          delete this.graph[n][key]
+        });
+      }
+    }
+
+    //no more solutions
+    if (dist === Infinity) {
+      this.end = true;
+      return this.end
+    }
+
+    this.solutions[nearest] = [parent.concat(nearest), dist];
+    return this.end;
+  }
+
+  getAll() {
+    let end = this.tick();
+    if (end) {
+      return this.getResult();
+    } else {
+      return this.getAll();
+    }
+  }
+
+  getResult() {
+    return this.solutions;
+  }
+}
+
+JsDijkstra.create = (graph, start) => new JsDijkstra(graph, start);
+
 // 实现
 export function js_find_shortest_path(graph, solutions) {
   // var solutions = {};
@@ -98,5 +168,5 @@ export function js_find_shortest_path_all(graph, s) {
 
     solutions[nearest] = [parent.concat(nearest), dist];
   }
-  return solutions
+  return solutions;
 }

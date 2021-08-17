@@ -26,27 +26,36 @@ Universe.prototype.getIndex = function (row, column) {
 
 Universe.prototype.liveNeighborCount = function (row, col) {
   let count = 0;
+  let north = row == 0 ? this.height - 1: row - 1;
+  let south = row == this.height - 1  ? 0 : row + 1;
+  let west = col == 0? this.width - 1 : col - 1;
+  let east = col == this.width - 1 ? 0: col + 1;
 
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      if (i === 0 && j === 0) {
-        continue;
-      }
+  let nw = this.getIndex(north, west);
+  count += this.cells[nw];
 
-      let neighberX = row + i;
-      let neighberY = col + j;
+  let n = this.getIndex(north, col);
+  count += this.cells[n];
 
-      if (neighberX < 0) neighberX = this.height - 1;
-      if (neighberY < 0) neighberY = this.width - 1;
-      if (neighberX >= this.height) neighberX = 0;
-      if (neighberY >= this.width) neighberY = 0;
+  let ne = this.getIndex(north, east);
+  count += this.cells[ne];
 
-      let idx = this.getIndex(neighberX, neighberY);
-      count += this.cells[idx];
-    }
-  }
+  let w = this.getIndex(row, west);
+  count += this.cells[w];
 
-  return count;
+  let e = this.getIndex(row, east);
+  count += this.cells[e];
+
+  let sw = this.getIndex(south, west);
+  count += this.cells[sw];
+
+  let s = this.getIndex(south, col);
+  count += this.cells[s];
+
+  let se = this.getIndex(south, east);
+  count += this.cells[se];
+
+  return count
 };
 
 Universe.prototype.tick = function () {

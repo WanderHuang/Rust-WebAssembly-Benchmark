@@ -3,8 +3,7 @@ import { Button, Row, Input, message, Select } from 'antd';
 import * as wasm from 'Dijkstra/wasm';
 import {
   generatGraph,
-  js_find_shortest_path,
-  js_find_shortest_path_all,
+  JsDijkstra
 } from './dijkstra';
 import './index.less';
 
@@ -15,6 +14,7 @@ function Dijkstra() {
   const [size, setSize] = useState(200);
   const [type, setType] = useState(1);
   const wasmRef = useRef();
+  const jsRef = useRef(JsDijkstra);
   const wasmCanvasRef = useRef();
   const jsCanvasRef = useRef();
 
@@ -49,15 +49,16 @@ function Dijkstra() {
     // let wasmSolutions = {
     //   0: [[], 0],
     // };
-    let jsSolutions = {
-      0: [[], 0],
-    };
+    // let jsSolutions = {
+    //   0: [[], 0],
+    // };
 
     perfRef.current = {
       wasm: 0,
       js: 0,
     };
     let wasmDesk = wasmRef.current.Desk.new(graph, 0);
+    let jsDesk = jsRef.current.create(graph, 0);
 
     function runWasm() {
       return new Promise((resolve) => {
@@ -88,18 +89,17 @@ function Dijkstra() {
         function exec() {
           setTimeout(() => {
             let start = performance.now();
-            let [finish, res] = js_find_shortest_path(graph, jsSolutions);
+            let finish = jsDesk.tick()
             perfRef.current.js += performance.now() - start;
-            jsSolutions = res;
             renderGraph(
               jsCanvasRef.current.getContext('2d'),
-              jsSolutions,
+              jsDesk.getResult(),
               size
             );
             if (!finish) {
               exec();
             } else {
-              resolve(jsSolutions);
+              resolve(jsDesk.getResult());
             }
           }, 0);
         }
@@ -135,7 +135,8 @@ function Dijkstra() {
 
     function runJs() {
       let start = performance.now();
-      let res = js_find_shortest_path_all(graph, 0);
+      let jsDesk = jsRef.current.create(graph, 0);
+      let res = jsDesk.getAll();
       perfRef.current.js += performance.now() - start;
       renderGraph(jsCanvasRef.current.getContext('2d'), res, size);
       console.log('js', res);
