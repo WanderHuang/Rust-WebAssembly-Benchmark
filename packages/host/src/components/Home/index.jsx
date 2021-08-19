@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 
 function Home() {
   return (
-    <div style={{paddingTop: 100, backgroundColor: '#97eaa530'}}>
+    <div style={{paddingTop: 100, backgroundColor: '#97eaa530', height: 'calc(100vh - 40px)', overflow: 'hidden'}}>
       <div
         style={{position: 'relative', height: 'calc(100vh - 100px)', width: 'calc(100vw - 500px)', left: 250}}
       >
