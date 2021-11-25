@@ -1,0 +1,9 @@
+{
+  "name": "wasmer-test",
+  "version": "0.1.0",
+  "description": "中后台应用wasm",
+  "scripts": {
+    "start": "cargo run",
+    "build": "cargo build --release"
+  }
+}

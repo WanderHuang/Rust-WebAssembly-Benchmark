@@ -6,8 +6,10 @@
   "scripts": {
     "start": "yarn start:host",
     "start:wasm": "lerna run --scope *-wasm --parallel start",
+    "start:wasmer": "lerna run --scope wasmer-* --parallel start",
     "start:host": "lerna run --scope host start",
-    "build:wasm": "lerna run build:wasm --stream"
+    "build:wasm": "lerna run build:wasm --stream",
+    "build:wasmer": "lerna run --scope wasmer-* --parallel build"
   },
   "private": true,
   "workspaces": [
