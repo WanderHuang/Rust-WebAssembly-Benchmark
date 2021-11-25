@@ -36,6 +36,13 @@
 
 `yarn & yarn build:wasm & yarn start`
 
+```bash
+yarn
+yarn build:wasm
+yarn start:wasm
+yarn start
+```
+
 ## 结构
 
 ```

@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "lerna run start --parallel",
+    "start": "yarn start:host",
+    "start:wasm": "lerna run --scope *-wasm --parallel start",
+    "start:host": "lerna run --scope host start",
     "build:wasm": "lerna run build:wasm --stream"
   },
   "private": true,
